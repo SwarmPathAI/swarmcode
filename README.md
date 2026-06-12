@@ -51,6 +51,15 @@ swarmcode update --check   # just check whether a newer version exists
 
 (`brew upgrade swarmcode` / re-running the curl installer also work.)
 
+## Uninstall
+
+```bash
+rm ~/.local/bin/swarmcode        # curl install (or wherever you installed it)
+brew uninstall swarmcode         # Homebrew install
+npm uninstall -g swarmcode       # npm install
+rm -rf ~/.swarmcode              # optional: remove all user data (config, sessions, memory)
+```
+
 ## License
 
 Binary-only, free to use; no redistribution or reverse engineering. See [LICENSE.txt](LICENSE.txt).
@@ -107,6 +116,15 @@ swarmcode update --check   # 只检查是否有新版
 ```
 
 (`brew upgrade swarmcode` 或重跑 curl 安装命令同样有效。)
+
+## 卸载
+
+```bash
+rm ~/.local/bin/swarmcode        # curl 安装(或你自定义的安装目录)
+brew uninstall swarmcode         # Homebrew 安装
+npm uninstall -g swarmcode       # npm 安装
+rm -rf ~/.swarmcode              # 可选:清除全部用户数据(配置/会话/记忆)
+```
 
 ## 许可
 
