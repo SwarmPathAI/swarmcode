@@ -20,7 +20,7 @@
   "license": "SEE LICENSE IN https://github.com/SwarmPathAI/swarmcode/blob/main/LICENSE.txt",
   "repository": {
     "type": "git",
-    "url": "https://github.com/SwarmPathAI/swarmcode.git"
+    "url": "git+https://github.com/SwarmPathAI/swarmcode.git"
   },
   "homepage": "https://github.com/SwarmPathAI/swarmcode",
   "publishConfig": {
