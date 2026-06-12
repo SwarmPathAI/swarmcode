@@ -1,0 +1,20 @@
+swarmcode — Proprietary License
+
+Copyright (c) 2026 SwarmPathAI. All rights reserved.
+
+This software is distributed in binary form only. Permission is granted to
+download, install, and use the unmodified binary for personal and internal
+business purposes, free of charge.
+
+You may NOT, without prior written permission:
+  - redistribute, sell, rent, sublicense, or rehost the binary;
+  - reverse engineer, decompile, disassemble, or otherwise attempt to
+    derive the source code, except to the extent such restriction is
+    prohibited by applicable law;
+  - remove or alter any proprietary notices.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY ARISING FROM THE USE OF THE SOFTWARE.
