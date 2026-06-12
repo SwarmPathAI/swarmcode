@@ -1,4 +1,6 @@
 // Downloads the prebuilt swarmcode binary for this platform on npm install.
+// Uses Node's built-in fetch (Node 18+) — no curl/wget dependency, so it
+// works in slim containers and minimal servers.
 const { execFileSync } = require("child_process");
 const fs = require("fs");
 const path = require("path");
@@ -13,17 +15,30 @@ function label() {
   process.exit(1);
 }
 
-const url = `https://github.com/${REPO}/releases/latest/download/swarmcode-${label()}.tar.gz`;
-const dir = path.join(__dirname, "dist");
-fs.mkdirSync(dir, { recursive: true });
-const tarball = path.join(dir, "swarmcode.tar.gz");
+async function main() {
+  const url = `https://github.com/${REPO}/releases/latest/download/swarmcode-${label()}.tar.gz`;
+  const dir = path.join(__dirname, "dist");
+  fs.mkdirSync(dir, { recursive: true });
+  const tarball = path.join(dir, "swarmcode.tar.gz");
 
-console.log(`swarmcode: downloading ${url}`);
-execFileSync("curl", ["-fsSL", url, "-o", tarball], { stdio: "inherit" });
-execFileSync("tar", ["-xzf", tarball, "-C", dir], { stdio: "inherit" });
-fs.rmSync(tarball, { force: true });
-fs.chmodSync(path.join(dir, "swarmcode"), 0o755);
-try {
-  execFileSync("xattr", ["-d", "com.apple.quarantine", path.join(dir, "swarmcode")], { stdio: "ignore" });
-} catch (_) {}
-console.log("swarmcode: installed — run `swarmcode model` to configure a channel");
+  console.log(`swarmcode: downloading ${url}`);
+  const res = await fetch(url, { redirect: "follow" });
+  if (!res.ok) {
+    console.error(`swarmcode: download failed (HTTP ${res.status})`);
+    process.exit(1);
+  }
+  fs.writeFileSync(tarball, Buffer.from(await res.arrayBuffer()));
+
+  execFileSync("tar", ["-xzf", tarball, "-C", dir], { stdio: "inherit" });
+  fs.rmSync(tarball, { force: true });
+  fs.chmodSync(path.join(dir, "swarmcode"), 0o755);
+  try {
+    execFileSync("xattr", ["-d", "com.apple.quarantine", path.join(dir, "swarmcode")], { stdio: "ignore" });
+  } catch (_) {}
+  console.log("swarmcode: installed — run `swarmcode model` to configure a channel");
+}
+
+main().catch((e) => {
+  console.error(`swarmcode: install failed: ${e.message}`);
+  process.exit(1);
+});
