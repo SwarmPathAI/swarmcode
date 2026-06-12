@@ -22,5 +22,8 @@
     "type": "git",
     "url": "https://github.com/SwarmPathAI/swarmcode.git"
   },
-  "homepage": "https://github.com/SwarmPathAI/swarmcode"
+  "homepage": "https://github.com/SwarmPathAI/swarmcode",
+  "publishConfig": {
+    "access": "public"
+  }
 }
