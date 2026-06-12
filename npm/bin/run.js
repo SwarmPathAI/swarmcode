@@ -6,7 +6,7 @@ const fs = require("fs");
 
 const bin = path.join(__dirname, "..", "dist", "swarmcode");
 if (!fs.existsSync(bin)) {
-  console.error("swarmcode binary missing — reinstall: npm install -g swarmcode");
+  console.error("swarmcode binary missing — reinstall: npm install -g @swarmpathai/swarmcode");
   process.exit(1);
 }
 const r = spawnSync(bin, process.argv.slice(2), { stdio: "inherit" });

@@ -26,7 +26,7 @@ brew install swarmcode
 **npm**
 
 ```bash
-npm install -g swarmcode
+npm install -g @swarmpathai/swarmcode
 ```
 
 **Manual** — grab a tarball from [Releases](../../releases/latest) (`darwin-universal` runs on both Apple Silicon and Intel Macs), untar, put `swarmcode` on your PATH, verify against `SHA256SUMS`.
@@ -56,7 +56,7 @@ swarmcode update --check   # just check whether a newer version exists
 ```bash
 rm ~/.local/bin/swarmcode        # curl install (or wherever you installed it)
 brew uninstall swarmcode         # Homebrew install
-npm uninstall -g swarmcode       # npm install
+npm uninstall -g @swarmpathai/swarmcode       # npm install
 rm -rf ~/.swarmcode              # optional: remove all user data (config, sessions, memory)
 ```
 
@@ -92,7 +92,7 @@ brew install swarmcode
 **npm**
 
 ```bash
-npm install -g swarmcode
+npm install -g @swarmpathai/swarmcode
 ```
 
 **手动** —— 从 [Releases](../../releases/latest) 下载压缩包(`darwin-universal` 同时支持 Apple Silicon 与 Intel Mac),解压后把 `swarmcode` 放进 PATH;用 `SHA256SUMS` 校验。
@@ -122,7 +122,7 @@ swarmcode update --check   # 只检查是否有新版
 ```bash
 rm ~/.local/bin/swarmcode        # curl 安装(或你自定义的安装目录)
 brew uninstall swarmcode         # Homebrew 安装
-npm uninstall -g swarmcode       # npm 安装
+npm uninstall -g @swarmpathai/swarmcode       # npm 安装
 rm -rf ~/.swarmcode              # 可选:清除全部用户数据(配置/会话/记忆)
 ```
 
