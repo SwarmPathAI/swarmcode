@@ -12,7 +12,7 @@ First public binary release.
 **Install**
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/SwarmPathAI/swarmcode/main/install.sh | bash
+curl -fsSL https://github.com/SwarmPathAI/swarmcode/releases/latest/download/install.sh | bash
 ```
 
 `darwin-universal` runs on Apple Silicon and Intel Macs. Verify downloads against `SHA256SUMS`.
