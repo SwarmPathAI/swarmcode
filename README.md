@@ -26,7 +26,7 @@ brew install swarmcode
 **npm**
 
 ```bash
-npm install -g @swarmpathai/swarmcode
+npm install -g swarmcode
 ```
 
 **Manual** — grab a tarball from [Releases](../../releases/latest) (`darwin-universal` runs on both Apple Silicon and Intel Macs), untar, put `swarmcode` on your PATH, verify against `SHA256SUMS`.
@@ -83,7 +83,7 @@ brew install swarmcode
 **npm**
 
 ```bash
-npm install -g @swarmpathai/swarmcode
+npm install -g swarmcode
 ```
 
 **手动** —— 从 [Releases](../../releases/latest) 下载压缩包(`darwin-universal` 同时支持 Apple Silicon 与 Intel Mac),解压后把 `swarmcode` 放进 PATH;用 `SHA256SUMS` 校验。
