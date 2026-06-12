@@ -1,18 +1,19 @@
-## swarmcode v0.5.0
+## swarmcode v0.5.1
 
-First public binary release.
+Quality-of-life release for terminal behavior.
 
-- Fullscreen terminal UI with mouse support (hover, click-to-expand, wheel, precise drag-select with auto-copy), pinned input/status bar, in-viewport streaming with live markdown and tables
-- 29+ model channels via the interactive `swarmcode model` wizard (Anthropic, OpenAI, Gemini, DeepSeek, Kimi, MiniMax, DashScope, GLM, custom proxies, …), models.dev-backed metadata
-- Parallel agent teams, MCP servers (standard `.mcp.json`), skills, lifecycle hooks, fine-grained permissions, git-worktree isolation
-- Session persistence: resume by id or name, `/rename`, fork, crash checkpoints
-- Headless `exec` (text / json / stream-json), stream-json SDK control protocol, `swarmcode serve` (HTTP + WebSocket), `--ide` integration
-- Persistent cross-session memory with natural-language editing
+- **Ctrl+Z now suspends cleanly**: the terminal is fully handed back to your shell before suspending (no more striped leftovers / stuck scroll regions); `fg` rebuilds the screen automatically
+- **Clean exit**: `/exit` and Ctrl+D clear the screen and leave a single line with your session's resume handle
+- **Welcome card**: branded startup banner with version, model, and working directory
+- macOS builds now include the `swarmcode update` self-updater (Linux builds already had it)
 
-**Install**
+**Install / Update**
 
 ```bash
+# new install:
 curl -fsSL https://github.com/SwarmPathAI/swarmcode/releases/latest/download/install.sh | bash
+# already installed:
+swarmcode update
 ```
 
 `darwin-universal` runs on Apple Silicon and Intel Macs. Verify downloads against `SHA256SUMS`.
