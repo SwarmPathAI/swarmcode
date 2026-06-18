@@ -1,11 +1,10 @@
-## swarmcode v0.5.1
+## swarmcode v0.5.2
 
-Quality-of-life release for terminal behavior.
+Quality-of-life release for the pinned status bar and clean exit.
 
-- **Ctrl+Z now suspends cleanly**: the terminal is fully handed back to your shell before suspending (no more striped leftovers / stuck scroll regions); `fg` rebuilds the screen automatically
-- **Clean exit**: `/exit` and Ctrl+D clear the screen and leave a single line with your session's resume handle
-- **Welcome card**: branded startup banner with version, model, and working directory
-- macOS builds now include the `swarmcode update` self-updater (Linux builds already had it)
+- **Resize-adaptive status bar**: the pinned bottom bar now reflows to the new terminal width/height the moment you resize the window — even while it's waiting for input. Previously only the top scrollback reflowed and the bottom bar stayed clipped at the old width until the next turn.
+- **Instant model switch**: after `/model`, the bottom bar reflects the new model immediately instead of waiting for the next turn to run.
+- **Fully clean exit**: `/exit` and Ctrl+D now leave a completely blank screen (no lingering goodbye line). Your session is still saved — recover it anytime with `swarmcode resume`.
 
 **Install / Update**
 
