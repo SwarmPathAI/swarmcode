@@ -1,6 +1,6 @@
 {
   "name": "@swarmpathai/swarmcode",
-  "version": "0.5.2",
+  "version": "0.5.3",
   "description": "Provider-agnostic AI coding agent for your terminal (binary distribution)",
   "bin": {
     "swarmcode": "bin/run.js"
