@@ -9,6 +9,10 @@ $repo = if ($env:SWARMCODE_REPO) { $env:SWARMCODE_REPO } else { "SwarmPathAI/swa
 # is identical across macOS / Linux / Windows.
 $installDir = if ($env:SWARMCODE_INSTALL_DIR) { $env:SWARMCODE_INSTALL_DIR } else { Join-Path $HOME ".local\bin" }
 
+# Windows PowerShell 5.1 defaults to SystemDefault, which on older .NET may not
+# negotiate TLS 1.2 — GitHub requires it. Force TLS 1.2 so the download works.
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+
 $label = "windows-x64"
 $url = "https://github.com/$repo/releases/latest/download/swarmcode-$label.tar.gz"
 Write-Host "Downloading $url ..."
@@ -23,10 +27,22 @@ try {
     if ($LASTEXITCODE -ne 0) { throw "tar extraction failed" }
 
     New-Item -ItemType Directory -Force -Path $installDir | Out-Null
-    Copy-Item -Force (Join-Path $tmp "swarmcode.exe") (Join-Path $installDir "swarmcode.exe")
+    $dest = Join-Path $installDir "swarmcode.exe"
+    try {
+        Copy-Item -Force (Join-Path $tmp "swarmcode.exe") $dest
+    }
+    catch {
+        # The most common failure on Windows: the target swarmcode.exe is still
+        # running and holding a file lock, so the copy is denied. Give a clear,
+        # actionable message instead of a cryptic access error.
+        throw "Could not write $dest. If swarmcode is currently running, close it (all terminals/tabs) and re-run the installer. Original error: $($_.Exception.Message)"
+    }
 }
 finally {
-    Remove-Item -Recurse -Force $tmp -ErrorAction SilentlyContinue
+    # Best-effort cleanup. Never let a cleanup failure mask the real error from
+    # the try block (PS 5.1 can throw a non-suppressible error here on paths
+    # with spaces), so swallow anything this throws.
+    try { Remove-Item -Recurse -Force $tmp -ErrorAction SilentlyContinue } catch { }
 }
 
 $exe = Join-Path $installDir "swarmcode.exe"
