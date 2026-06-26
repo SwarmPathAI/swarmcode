@@ -4,7 +4,8 @@ const { spawnSync } = require("child_process");
 const path = require("path");
 const fs = require("fs");
 
-const bin = path.join(__dirname, "..", "dist", "swarmcode");
+const binName = process.platform === "win32" ? "swarmcode.exe" : "swarmcode";
+const bin = path.join(__dirname, "..", "dist", binName);
 if (!fs.existsSync(bin)) {
   console.error("swarmcode binary missing — reinstall: npm install -g @swarmpathai/swarmcode");
   process.exit(1);

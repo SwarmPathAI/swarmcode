@@ -1,6 +1,6 @@
 {
   "name": "@swarmpathai/swarmcode",
-  "version": "0.5.4",
+  "version": "0.5.5",
   "description": "Provider-agnostic AI coding agent for your terminal (binary distribution)",
   "bin": {
     "swarmcode": "bin/run.js"
@@ -15,7 +15,8 @@
   ],
   "os": [
     "darwin",
-    "linux"
+    "linux",
+    "win32"
   ],
   "license": "SEE LICENSE IN https://github.com/SwarmPathAI/swarmcode/blob/main/LICENSE.txt",
   "repository": {
