@@ -1,3 +1,41 @@
+## swarmcode v0.8.1
+
+**A bug-fix / parity patch over v0.8.0, from two live side-by-side audits against real Claude Code and hermes. Test-green (1433 pass).**
+
+**Inline mode is usable again.** With inline mode on (`/tui inline`), multi-turn conversations used to garble — answers drew at the top of the screen, over their own prompt and over earlier turns, with no scrollback. Fixed: answers now render below their prompt, turns scroll normally, `/clear` clears the screen, and there's no leftover overwriting — matching Claude Code's inline behavior.
+
+**Interactive cards no longer sometimes need two Enters.** AskUserQuestion, tool-approval prompts, and plan approval could occasionally swallow the first Enter (two parts of the app were reading the keyboard at once). Fixed at the source so the popup always gets your keystroke.
+
+**codex reasoning effort Max/Ultra no longer errors.** Picking the top effort levels on a codex model used to fail every turn with an HTTP 400; they now map to a level the backend accepts, so high-effort turns work.
+
+**Claude "adaptive thinking" degrades gracefully behind proxies.** On the official Anthropic API this was already correct; on an Anthropic-compatible proxy that doesn't support the new effort field, swarmcode now automatically retries without it (and remembers, per channel) instead of failing every thinking turn.
+
+**Grok works with your existing Grok login — no API key.** A new Grok channel reuses your local Grok CLI login (SuperGrok / Premium+), the same way the Codex channel reuses your ChatGPT login. DashScope now works from just its environment variable, Gemini honors `GOOGLE_API_KEY`, and the `google` / `grok` channel aliases resolve — bringing more providers up to the same one-command integration as codex.
+
+**Works behind a proxy.** If you're behind a firewall and use a proxy (`HTTPS_PROXY` / `HTTP_PROXY`), swarmcode now routes every request — chat, image generation, and login — through it, so providers whose direct route is blocked (like the ChatGPT Codex backend) reach through your proxy instead of failing. No proxy set means a direct connection as before, so the same build works both behind a firewall and on an open server.
+
+**Cleaner web-search answers and file links.** Citation markers from web search no longer leak as `citeturn0search0…` garbage into the text. Generated/written file paths show as a plain path (and generated images auto-open in your default viewer).
+
+---
+
+## swarmcode v0.8.0
+
+**A big capability release: the OpenAI Codex / Qwen / Bedrock channels actually log in now, `/effort` is model-aware with full codex parity, Claude's `ultrathink` keyword works, file paths in output are clickable, and `swarmcode serve` grew into a multi-tenant platform surface.**
+
+**OpenAI Codex, Qwen, and AWS Bedrock now log in for real.** The channels that used to dead-end with "auth method not supported yet" work: **Codex** runs a real device-code OAuth login (open the URL, enter the code), remembers you (Use existing / Reauthenticate / Cancel), and refreshes silently when the token expires. **Qwen** reuses the `qwen` CLI's own saved credentials. **Bedrock** honors `AWS_BEARER_TOKEN_BEDROCK`. Verified end-to-end against a real ChatGPT/Codex subscription.
+
+**`/effort` is now model-aware, matching codex exactly.** It fetches each model's own reasoning ladder live, so `gpt-5.6-sol` shows its six levels (Low/Medium/High/Xhigh/Max/Ultra) and another model shows only the levels it supports — headed by the model name, just like codex CLI. Codex models always reason (there's no "off"), so they default to High, and the footer shows the active level next to the model. A new `/fast` toggle sends codex's priority service tier for faster output.
+
+**Type `ultrathink` (or `think hard`, etc.) to make the model reason harder — just this once.** Matching Claude Code: a thinking keyword raises the current turn's reasoning effort (never below your configured level) and shows the escalation live. Works on Claude and on codex/OpenAI models alike.
+
+**File paths in the model's output are clickable now.** A path like `file:/Users/…/report.docx` or a Windows `D:\…\report.xlsx` renders as an underlined link your terminal opens on click — Word/Excel/PDF/PowerPoint open in their default app. Works with non-ASCII filenames and any Windows drive; conservative enough that things like `3/4` are never turned into links. (Needs an OSC-8-capable terminal — iTerm2, WezTerm, kitty, VS Code, Windows Terminal.)
+
+**Image generation.** A new `GenerateImage` tool creates a PNG on channels that support it (e.g. the codex channel) and pops it open in your default image viewer, since a fullscreen terminal can't show it inline.
+
+**`swarmcode serve` became a real platform surface.** A versioned Thread/Turn/Item event log with cursor paging, a structured code-review endpoint, per-tenant/workspace isolation with directory jailing, persistent interactive shells (`exec_command`), a multi-file patch tool (`ApplyPatch`), and encrypted storage for MCP OAuth tokens under `SWARMCODE_MASTER_KEY`. The in-session `/model` picker also lists configured OAuth channels now, and `/loop`'s autonomous mode got a much deeper built-in checklist.
+
+---
+
 ## swarmcode v0.7.0
 
 **A reliability-and-parity release: `/compact` overhauled end-to-end, Anthropic prompt caching wired up, and a wide interaction/audit pass fixing ~30 real bugs. All new/changed subsystems are test-green.**
