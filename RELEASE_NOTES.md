@@ -1,3 +1,14 @@
+## swarmcode v0.9.1
+
+A follow-up to the v0.9.0 membership gateway: member self-service, painless gateway migration, and a chat-input fix.
+
+- **`swarmcode member me`** — a member sees **their own** quota/usage from their own machine: it signs `GET /membership/me` with the local device key and prints `used / limit (remaining) · today · last-30d · expires · status`. Own record only, no admin token needed — the admin's `member list --watch` stays the roster-wide view.
+- **`swarmcode member set-gateway <url>`** — repoint an existing membership at a new gateway URL **without re-joining**. Keeps the member id + device key (quota / usage / device-binding preserved); only the URL changes. This is the smooth path when the admin fronts the gateway with HTTPS — members run `swarmcode member set-gateway https://gw.example.com` once. New members get TLS from the start via `--gateway https://gw.example.com` at issue time.
+- **Fix — a chat message that begins with `/` and is a filesystem path** (`/Users/…`, `/etc/hosts`, `/usr/local/…`) is now sent as normal chat instead of being rejected as `unknown command`. Real slash-commands, and commands whose *arguments* are paths (`/add-dir /Users/…`), still dispatch.
+- **Gateway TLS guidance** — `docs/GATEWAY_DEPLOY.md` §4 (HTTPS reverse proxy) is the recommended production front: members on `https://` (443) are far more reset-resistant on long streaming turns than plain HTTP on an odd port. Proxy the gateway path 1:1 (no rewrite) so the device signature over the request path stays valid.
+
+---
+
 ## swarmcode v0.9.0
 
 **Membership gateway — share ONE Codex (or any upstream) subscription with many device-bound members, without handing anyone a copy-pasteable key.**

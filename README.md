@@ -6,6 +6,8 @@
 
 **New in v0.9.0 — membership gateway:** share ONE authorized Codex (or any upstream) subscription with many **device-bound** members, without handing anyone a copy-pasteable key. The admin runs `swarmcode serve --gateway`, issues each member a one-time `swarmcode join` code (with its own quota / validity / device-cap / model allow-list), and watches usage live — while members get a fully transparent proxy (web search, image generation, reasoning effort all work identically). See the release notes and `docs/GATEWAY_DEPLOY.md`.
 
+**v0.9.1** adds member self-service — `swarmcode member me` (see your own quota/usage) and `swarmcode member set-gateway <url>` (move to a new gateway URL, e.g. an HTTPS front, without re-joining) — and fixes chat messages that begin with a filesystem path (`/Users/…`) being rejected as an unknown command.
+
 Distributed as prebuilt binaries. ✦ This repository hosts **releases and documentation only**.
 
 ## Install
