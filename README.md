@@ -4,11 +4,13 @@
 
 **swarmcode** is a provider-agnostic AI coding agent for your terminal: a fullscreen TUI that orchestrates teams of LLM agents across 29+ model channels (Anthropic, OpenAI, Gemini, DeepSeek, Kimi, MiniMax, DashScope, GLM, custom proxies, …).
 
+**New in v0.9.0 — membership gateway:** share ONE authorized Codex (or any upstream) subscription with many **device-bound** members, without handing anyone a copy-pasteable key. The admin runs `swarmcode serve --gateway`, issues each member a one-time `swarmcode join` code (with its own quota / validity / device-cap / model allow-list), and watches usage live — while members get a fully transparent proxy (web search, image generation, reasoning effort all work identically). See the release notes and `docs/GATEWAY_DEPLOY.md`.
+
 Distributed as prebuilt binaries. ✦ This repository hosts **releases and documentation only**.
 
 ## Install
 
-**Platforms**: macOS (Apple Silicon & Intel) and Linux (x64 & arm64) natively; on Windows use **WSL2** with the Linux build (native Windows support is on the roadmap).
+**Platforms**: macOS (Apple Silicon & Intel), Linux (x64 & arm64), and Windows (x64) — all native.
 
 **curl (recommended)**
 
@@ -23,10 +25,16 @@ brew tap swarmpathai/swarmcode https://github.com/SwarmPathAI/swarmcode
 brew install swarmcode
 ```
 
-**npm**
+**npm** (any OS with Node)
 
 ```bash
 npm install -g @swarmpathai/swarmcode
+```
+
+**Windows (PowerShell)**
+
+```powershell
+irm https://github.com/SwarmPathAI/swarmcode/releases/latest/download/install.ps1 | iex
 ```
 
 **Manual** — grab a tarball from [Releases](../../releases/latest) (`darwin-universal` runs on both Apple Silicon and Intel Macs), untar, put `swarmcode` on your PATH, verify against `SHA256SUMS`.
