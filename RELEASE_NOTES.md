@@ -1,3 +1,15 @@
+## swarmcode v0.9.2
+
+Self-update fixes for package-manager and Windows installs.
+
+- **`swarmcode update` works on npm / Homebrew installs again.** v0.8.0 added a guard that hard-refused to self-update a package-manager-managed install; it's now a warning, not a refusal — the binary updates in place (pre-v0.8.0 behavior), with a note that the manager may report a stale version.
+- **`swarmcode update` works on Windows.** The updater had no `windows/x86_64` case (bailed `no prebuilt binary for windows/x86_64`) and looked for `swarmcode` instead of `swarmcode.exe` in the archive. Both fixed.
+- **Correct package-manager hints** — npm hint now uses the scoped `@swarmpathai/swarmcode`; Homebrew hint drops the erroneous `--cask` (it's a formula).
+
+> Note: updating **from** v0.9.1 to v0.9.2 still uses the old (v0.9.1) updater, so npm-installed machines need one more `npm install -g @swarmpathai/swarmcode@latest`; from v0.9.2 onward `swarmcode update` works everywhere.
+
+---
+
 ## swarmcode v0.9.1
 
 A follow-up to the v0.9.0 membership gateway: member self-service, painless gateway migration, and a chat-input fix.

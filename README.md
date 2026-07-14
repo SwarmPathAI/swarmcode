@@ -8,6 +8,8 @@
 
 **v0.9.1** adds member self-service — `swarmcode member me` (see your own quota/usage) and `swarmcode member set-gateway <url>` (move to a new gateway URL, e.g. an HTTPS front, without re-joining) — and fixes chat messages that begin with a filesystem path (`/Users/…`) being rejected as an unknown command.
 
+**v0.9.2** fixes `swarmcode update`: it works on Windows now, and no longer hard-refuses on npm/Homebrew installs (warns and updates in place instead). Updating *to* v0.9.2 still needs the package manager one time (`npm install -g @swarmpathai/swarmcode@latest`, or the Windows `install.ps1`); after that `swarmcode update` works everywhere.
+
 Distributed as prebuilt binaries. ✦ This repository hosts **releases and documentation only**.
 
 ## Install
