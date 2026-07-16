@@ -1,3 +1,19 @@
+## swarmcode v0.10.1
+
+No terminal flicker, codex / membership channels working end-to-end, and swarmcode-native settings.
+
+- **A wide-reaching silent failure on codex / membership channels is fixed at the root.** The ChatGPT Codex backend (and the membership gateway that relays to it) rejects the `max_output_tokens` parameter with a `400`. Every feature that issued a direct request carrying a token cap was failing silently there: the **auto-mode permission classifier** (which fail-closed, so auto mode kept prompting for approval on nearly every tool), `/compact` context compaction, session auto-naming, memory recall, the advisor, and `/goal`. The Responses adapter now omits `max_output_tokens` on codex/membership channels — one fix restores them all. Regular turns and every other provider are unchanged.
+- **Terminal flicker eliminated at the root.** The post-generation black flash, the send-time flash, and the per-Shift+Tab flash shared one cause: a redundant alternate-screen switch (`?1049h`) re-issued while already on the alt buffer, which iTerm2 / Apple Terminal / Windows Terminal / ConPTY answer with a screen-clearing blank frame. All alternate-screen transitions now go through a single state-guarded owner that never re-issues the switch; a lint test keeps raw `?1049` writes from creeping back.
+- **Membership image generation survives idle-timeout proxies.** A buffered render is one silent HTTP connection for the whole 40–160 s render; a member's proxy (Clash / corporate `HTTPS_PROXY`) with a ~30 s idle timeout cut it (`error sending request`). It's now an **async job** — `POST /v1/images/jobs` returns a job id in ~1 s and renders in the background, then the client polls with short requests — with automatic fallback to the synchronous relay against an older gateway.
+- **Conversation-title chip.** After the first turn a short kebab-case topic name is auto-generated on the session's own model and shown as a right-aligned blue chip on the input box's top border (claude parity); it repaints the moment the background namer returns, no keypress required.
+- **Auto mode runs `GenerateImage` without prompting**, matching the Allow it already gets in Default/AcceptEdits — deterministic and provider-independent, so it's reliable on codex/OpenAI member channels where the classifier can't run.
+- **Permission grants persist to swarmcode's own `.swarmcode/settings.json`** (user / project / local tiers) instead of `.claude/`, while still reading `.claude/settings.json` as a compatibility layer.
+- **Syntax previews readable on light terminals.** Un-highlighted `Write`/`Edit` preview text now uses the terminal's own default foreground; a GitHub-light palette auto-selects on light backgrounds (`COLORFGBG`) or via `SWARMCODE_SYNTAX_THEME=light`.
+
+**Platforms:** macOS (Apple Silicon / Intel / universal), Linux (x64 / arm64, musl-static), Windows (x64). Verify downloads against `SHA256SUMS`.
+
+---
+
 ## swarmcode v0.10.0
 
 One-approval autonomous tasks, a quieter auto mode, and tool loading aligned tool-for-tool with Claude Code + Codex.
