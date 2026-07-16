@@ -1,3 +1,18 @@
+## swarmcode v0.10.0
+
+One-approval autonomous tasks, a quieter auto mode, and tool loading aligned tool-for-tool with Claude Code + Codex.
+
+- **Plan mode can approve one bounded autonomous task in a single confirmation.** `ExitPlanMode` can carry a host-validated TaskGrant: frozen directory roots, an explicit reviewed tool scope, expiry, and hard budgets (default 128 turns / 2 h / 512 tool calls / $10 estimated model cost). Read/search scope works on macOS and Linux; on **Linux** a coding task can additionally produce **patch-only edits** in a disposable shadow workspace (clean completion seals a `manifest.json` + content-addressed blobs — the real workspace is never touched) and run **sandboxed offline Cargo build/test** (`BuildTest`: cgroup v2, cleared environment, no network; requires explicit operator provisioning). Everything unprovable stays fail-closed, and ordinary Auto/manual behavior is completely unchanged.
+- **Auto mode stops prompting on read-only tools.** A fixed allow-list (Read/Grep/Glob/LSP, task/TODO orchestration, MCP resource reads, …) is checked before the safety classifier — so it keeps working even when the classifier can't be reached — and two bugs that made auto mode fall closed on Codex/OpenAI providers are fixed (classifier output cap 256 → 2048 tokens; forced-High reasoning effort → Low).
+- **Tool loading parity, cheaper requests.** Tool schemas are stably sorted by name (restores prompt-cache hits on the tools block); dynamic discovery (`ToolSearch`) gained full OpenAI-Responses support (MCP namespace coalescing + BM25 deferred-tool search); `--disallowed-tools` entries can no longer be re-added by discovery; the `LSP` tool (renamed from `Lsp`) is deferred by default; and MCP tools no longer 400 on OpenAI Responses (JSON-Schema lowering to the Responses subset).
+- **Image generation through the membership gateway no longer times out.** Both the client and the gateway relay now use a dedicated 250 s image HTTP client (was the 120 s SSE client, which cut off long renders as a `502`), and the relay automatically retries transient upstream transport failures.
+- **New TUI.** **Shift+Tab** cycles the permission mode (`default → acceptEdits → plan`); **Ctrl+T** opens a persistent Tasks panel; **Ctrl+B** sends running foreground Bash/Agents to the background with session-resident completion notices. AskUserQuestion "Other" answers are now typed inline in the option row (fixes custom text disappearing after Enter), and modal panels match key+modifier exactly (Ctrl/Alt+Enter can no longer confirm a destructive action).
+- **Reliability.** `/rewind` uses one consistent restore-and-truncate path across teammate panes and headless runs; `exec --json` / `--stream` stdout is completely free of renderer output; idle compaction is no longer suppressed across concurrent agents; background-agent completion notices are delivered exactly once to the right recipient.
+
+**Platforms:** macOS (Apple Silicon / Intel / universal), Linux (x64 / arm64, musl-static), Windows (x64). Verify downloads against `SHA256SUMS`.
+
+---
+
 ## swarmcode v0.9.2
 
 Self-update fixes for package-manager and Windows installs.

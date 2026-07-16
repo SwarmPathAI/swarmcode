@@ -1,3 +1,13 @@
 .DS_Store
 npm/dist/
 node_modules/
+
+# release artifacts live in GitHub Releases, never in the repo
+*.tar.gz
+SHA256SUMS
+*.log
+
+# local scratch
+*.bak
+*.orig
+.claude/

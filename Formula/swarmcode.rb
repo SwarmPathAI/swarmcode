@@ -1,9 +1,9 @@
 class Swarmcode < Formula
   desc "Provider-agnostic AI coding agent for your terminal"
   homepage "https://github.com/SwarmPathAI/swarmcode"
-  version "0.9.2"
-  url "https://github.com/SwarmPathAI/swarmcode/releases/download/v0.9.2/swarmcode-v0.9.2-darwin-universal.tar.gz"
-  sha256 "cce600e1a7b9eced6b9eb40d013ba2b11a6e2f229a714f3865714de225e3bd4b"
+  version "0.10.0"
+  url "https://github.com/SwarmPathAI/swarmcode/releases/download/v0.10.0/swarmcode-v0.10.0-darwin-universal.tar.gz"
+  sha256 "99c81705dbcf7423a61a97eb1e1de466e3d673f0ef9501482026e849c822932b"
 
   def install
     bin.install "swarmcode"

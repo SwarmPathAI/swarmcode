@@ -10,6 +10,8 @@
 
 **v0.9.2** fixes `swarmcode update`: it works on Windows now, and no longer hard-refuses on npm/Homebrew installs (warns and updates in place instead). Updating *to* v0.9.2 still needs the package manager one time (`npm install -g @swarmpathai/swarmcode@latest`, or the Windows `install.ps1`); after that `swarmcode update` works everywhere.
 
+**New in v0.10.0 — one-approval autonomous tasks + a quieter auto mode.** Plan mode can now approve one bounded task in a single confirmation — with frozen scope, budgets, and expiry — including, on Linux, sandboxed patch-producing edits and offline Cargo build/test. Auto mode stops prompting for read-only tools (fixed allow-list, checked before the classifier). New TUI: **Shift+Tab** cycles the permission mode, **Ctrl+T** opens a persistent Tasks panel, **Ctrl+B** sends running foreground work to the background. Tool loading is aligned with Claude Code + Codex (stable schema order restores prompt caching; MCP tools no longer 400 on OpenAI Responses), and image generation through the membership gateway no longer times out on long renders (250s budget + automatic retry).
+
 Distributed as prebuilt binaries. ✦ This repository hosts **releases and documentation only**.
 
 ## Install
@@ -86,7 +88,7 @@ Binary-only, free to use; no redistribution or reverse engineering. See [LICENSE
 
 ## 安装
 
-**平台支持**:macOS(Apple Silicon 与 Intel)、Linux(x64 与 arm64)原生支持;Windows 请在 **WSL2** 中使用 Linux 版(原生 Windows 支持在路线图上)。
+**平台支持**:macOS(Apple Silicon 与 Intel)、Linux(x64 与 arm64)、Windows(x64)——全部原生支持。
 
 **curl(推荐)**
 
@@ -101,10 +103,16 @@ brew tap swarmpathai/swarmcode https://github.com/SwarmPathAI/swarmcode
 brew install swarmcode
 ```
 
-**npm**
+**npm**(任何有 Node 的系统)
 
 ```bash
 npm install -g @swarmpathai/swarmcode
+```
+
+**Windows(PowerShell)**
+
+```powershell
+irm https://github.com/SwarmPathAI/swarmcode/releases/latest/download/install.ps1 | iex
 ```
 
 **手动** —— 从 [Releases](../../releases/latest) 下载压缩包(`darwin-universal` 同时支持 Apple Silicon 与 Intel Mac),解压后把 `swarmcode` 放进 PATH;用 `SHA256SUMS` 校验。
