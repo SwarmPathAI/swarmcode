@@ -10,7 +10,18 @@ set -euo pipefail
 
 REPO="${SWARMCODE_REPO:-SwarmPathAI/swarmcode}"
 INSTALL_DIR="${SWARMCODE_INSTALL_DIR:-$HOME/.local/bin}"
-PKG_ROOT="${SWARMCODE_PKG_ROOT:-$HOME/.swarmcode/packages/standalone}"
+if [ "${SWARMCODE_PKG_ROOT+x}" = x ]; then
+  [ -n "$SWARMCODE_PKG_ROOT" ] || { echo "SWARMCODE_PKG_ROOT is set but empty" >&2; exit 1; }
+  PKG_ROOT="$SWARMCODE_PKG_ROOT"
+elif [ "${SWARMCODE_CONFIG_DIR+x}" = x ]; then
+  [ -n "$SWARMCODE_CONFIG_DIR" ] || { echo "SWARMCODE_CONFIG_DIR is set but empty" >&2; exit 1; }
+  PKG_ROOT="$SWARMCODE_CONFIG_DIR/packages/standalone"
+elif [ "${SWARMCODE_HOME+x}" = x ]; then
+  [ -n "$SWARMCODE_HOME" ] || { echo "SWARMCODE_HOME is set but empty" >&2; exit 1; }
+  PKG_ROOT="$SWARMCODE_HOME/packages/standalone"
+else
+  PKG_ROOT="$HOME/.swarmcode/packages/standalone"
+fi
 RELEASES_DIR="$PKG_ROOT/releases"
 CURRENT_LINK="$PKG_ROOT/current"
 LOCK_DIR="$PKG_ROOT/install.lock.d"

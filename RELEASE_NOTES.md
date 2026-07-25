@@ -1,3 +1,30 @@
+## swarmcode v0.12.2
+
+Web search and web fetch reach full parity on Anthropic-compatible endpoints, the model keeps searching until a complex question is answered, and the HUD tool tally counts every tool live — including server-side research — in both the classic and fullscreen views.
+
+- **Native web search on Anthropic-compatible endpoints.** Pointed at a third-party Anthropic-compatible base URL (e.g. DeepSeek's `/anthropic` endpoint) with only `ANTHROPIC_AUTH_TOKEN` set, swarmcode detects the credential, runs `web_search` server-side, and returns current-year results with a `Sources:` list — no separate search key required.
+- **Web fetch degrades gracefully.** Endpoints that reject the native `web_fetch` server tool transparently fall back to a client-side fetch for that turn while keeping native web search, instead of failing the whole request.
+- **The model searches until it has the answer.** The per-turn `web_search` budget is raised to 8 and the per-session ceiling stays at 200, so a complex question can drive several searches per turn across multiple rounds.
+- **The HUD tool tally is live, in fullscreen, for every tool.** Provider-hosted server tools (`web_search` / `web_fetch`) now increment the `✓ Web Search ×N` / `✓ Web Fetch ×N` status-bar tally — previously only client-dispatched tools were counted, and in the fullscreen turn view they were not counted at all. The tally also updates *while* the turn streams instead of only after it ends, so every tool call is visible as it happens.
+- **Read-only web tools run without a prompt.** WebSearch and WebFetch are treated as read-only and auto-approved under Default and Accept-Edits, and "allow all edits this session" switches to a deterministic accept-edits mode so file writes stop re-prompting.
+- **Date awareness.** The current date is injected into the system prompt and the search-tool guidance, so "latest"/"current" queries use the present year instead of stale results.
+- **Long Sources lists collapse.** A WebSearch answer with more than five sources shows a collapsed `Sources:` block that expands in place (Ctrl+O) to the full list.
+
+**Platforms:** macOS (Apple Silicon / Intel / universal), Linux (x64 / arm64, musl-static), Windows (x64). Verify downloads against `SHA256SUMS`.
+
+## swarmcode v0.12.1
+
+A fullscreen-rendering and interaction polish release on top of v0.12.0.
+
+- **No end-of-turn flicker.** The fullscreen turn view could repaint a byte-identical final frame twice at the end of a turn, reading as a brief full-screen flash. Identical frames are now suppressed at the single flush point (a modal opening/closing still forces the repaint through; a resize always changes the bytes), so unchanged content is never repainted.
+- **No residue on send.** The inline progress spinner could splice cursor-relative writes into the fullscreen screen and blank a row until the next repaint. A process-wide guard now keeps it byte-silent whenever the resident fullscreen renderer owns the screen, so sending a message no longer leaves a stale separator behind it.
+- **`/compact` and auto-compaction render in place.** Compaction no longer drops to the primary screen (briefly revealing stale scrollback) and back. It stays in the fullscreen view and shows its progress in-frame — the transcript, an animated `✽ Compacting conversation…` line, the block progress bar, and the pinned composer + status bar — like a normal turn's thinking indicator.
+- **`/cost` opens the status panel.** `/cost` now opens the tabbed `Settings · Status · Config · Usage` panel at the **Usage** tab (turns, tokens, estimated cost, context), consistent with `/status` and `/usage`.
+- **Bare skill invocation is helpful.** Invoking a skill with no task (e.g. `/ego-browser`) now confirms it is loaded, lists a few concrete example tasks, and asks what you'd like to do — instead of a generic greeting.
+- **Pasted images keep a consistent label.** A pasted image shows as `[Image #N]` in the composer and keeps that label in the sent transcript instead of flipping to `[image: clipboard]`. The model still receives the marker and the attached image; text-only models still gracefully drop the image with a placeholder.
+
+**Platforms:** macOS (Apple Silicon / Intel / universal), Linux (x64 / arm64, musl-static), Windows (x64). Verify downloads against `SHA256SUMS`.
+
 ## swarmcode v0.12.0
 
 End-to-end managed Artifact publishing, one implicit team per session, live MCP tool refresh, and a self-describing capability overview.
@@ -14,7 +41,7 @@ End-to-end managed Artifact publishing, one implicit team per session, live MCP 
 
 ## swarmcode v0.10.0
 
-One-approval autonomous tasks, a quieter auto mode, and tool loading aligned tool-for-tool with Claude Code + Codex.
+One-approval autonomous tasks, a quieter auto mode, and tool loading aligned tool-for-tool across leading coding agents.
 
 - **Plan mode can approve one bounded autonomous task in a single confirmation.** `ExitPlanMode` can carry a host-validated TaskGrant: frozen directory roots, an explicit reviewed tool scope, expiry, and hard budgets (default 128 turns / 2 h / 512 tool calls / $10 estimated model cost). Read/search scope works on macOS and Linux; on **Linux** a coding task can additionally produce **patch-only edits** in a disposable shadow workspace (clean completion seals a `manifest.json` + content-addressed blobs — the real workspace is never touched) and run **sandboxed offline Cargo build/test** (`BuildTest`: cgroup v2, cleared environment, no network; requires explicit operator provisioning). Everything unprovable stays fail-closed, and ordinary Auto/manual behavior is completely unchanged.
 - **Auto mode stops prompting on read-only tools.** A fixed allow-list (Read/Grep/Glob/LSP, task/TODO orchestration, MCP resource reads, …) is checked before the safety classifier — so it keeps working even when the classifier can't be reached — and two bugs that made auto mode fall closed on Codex/OpenAI providers are fixed (classifier output cap 256 → 2048 tokens; forced-High reasoning effort → Low).
