@@ -18,6 +18,10 @@
 
 **New in v0.12.2 — web research that finishes the job.** Pointed at any Anthropic-compatible base URL (e.g. DeepSeek's `/anthropic` endpoint) with only `ANTHROPIC_AUTH_TOKEN` set, swarmcode detects the credential and runs `web_search` server-side, returning current-year results with a `Sources:` list — no separate search key. The per-turn search budget is raised to 8 (200 per session), so a complex question drives several searches across multiple rounds until it is answered; endpoints that reject the native `web_fetch` fall back to a client-side fetch instead of failing the request. The HUD tool tally now counts **every** tool live while the turn streams — including provider-hosted search/fetch, which the fullscreen view previously never counted at all.
 
+**New in v0.13.3 — code intelligence and workflow isolation.** New Tree-sitter codebase-graph, fast reflink worktree, and workflow-host crates add cross-file navigation, isolated parallel-agent workspaces, and durable workflow lifecycle management. Provider credential refresh, schema-guided tool-input coercion, new hook seams, safer repeated compaction, and plugin SHA-256 pinning harden long-running agent sessions.
+
+**New in v0.14.0 — Claude-matched scrolling and explicit provider search routing.** Mouse-wheel scrolling ports Claude Code 2.1.220's complete time-driven acceleration model, detects current VS Code/xterm.js releases without an obsolete version ceiling, and is black-box verified against Claude Code in tmux and real VS Code. True Anthropic-native endpoints use hosted `web_search_20250305`, while OpenAI-compatible channels and Anthropic-shaped proxies that return ordinary `tool_use` calls use client-side AnySearch. The Unix Bash launcher also removes a conflicting process-group setup that made `setsid()` fail with `EPERM` on macOS.
+
 Distributed as prebuilt binaries. ✦ This repository hosts **releases and documentation only**.
 
 ## Install
@@ -91,6 +95,10 @@ Binary-only, free to use; no redistribution or reverse engineering. See [LICENSE
 **swarmcode** 是终端里的全能 AI 编程智能体:全屏 TUI,可在 29+ 模型渠道(Anthropic、OpenAI、Gemini、DeepSeek、Kimi、MiniMax、通义、智谱、自定义代理……)上编排 LLM 智能体团队。
 
 **v0.12.2 新增 —— 会把问题查到底的 Web 检索。** 指向任意 Anthropic 兼容 base URL(如 DeepSeek 的 `/anthropic` 端点）、仅设置 `ANTHROPIC_AUTH_TOKEN` 时,swarmcode 会识别该凭证并在服务端运行 `web_search`,返回带 `Sources:` 列表的当年结果,无需单独的搜索 key。每回合搜索预算提高到 8 次(每会话 200 次）,复杂问题可以跨多轮持续检索直到得出答案;拒绝原生 `web_fetch` 的端点会回退为客户端抓取,而不是让整个请求失败。HUD 工具计数现在会在回合进行中实时统计**每一个**工具——包括服务端托管的搜索/抓取,而全屏视图此前对它们完全不计数。
+
+**v0.13.3 新增 —— 代码智能与工作流隔离。** 新增基于 Tree-sitter 的代码库图、快速 reflink worktree 与 workflow-host crate，提供跨文件导航、并行 agent 隔离工作区和可持久化的工作流生命周期管理。Provider 凭证刷新、工具输入按 Schema 强制转换、新的钩子缝、重复压缩保护和插件 SHA-256 锁定进一步加固长时间运行的 agent 会话。
+
+**v0.14.0 新增 —— 与 Claude 一致的滚动及明确的 Provider 搜索路由。** 鼠标滚轮完整移植 Claude Code 2.1.220 按时间驱动的加速模型，现代 VS Code/xterm.js 版本不再受过时版本上限影响，并已通过 tmux 黑盒测试和真实 VS Code 测试与 Claude Code 对照验证。真正支持 Anthropic 原生工具的端点使用服务端 `web_search_20250305`；OpenAI 兼容渠道及返回普通 `tool_use` 的 Anthropic 外形代理使用客户端 AnySearch。Unix Bash 启动器还移除了会导致 macOS `setsid()` 返回 `EPERM` 的冲突进程组设置。
 
 以预编译二进制发行。✦ 本仓库只承载**发布产物与文档**。
 

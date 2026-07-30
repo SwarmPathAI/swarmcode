@@ -1,3 +1,27 @@
+## swarmcode v0.14.0
+
+A terminal-input and provider-routing reliability release, with Claude-matched scrolling in current VS Code, explicit native-versus-client web search behavior, and a process-level macOS Bash fix.
+
+- **Claude Code 2.1.220 mouse-wheel parity.** Streaming and settled transcript views share the full time-driven wheel state machine: native acceleration, 40 ms reset, direction-flip suppression, xterm.js/Windows decay, wheel-flood handling, fractional carry, and live `/scroll-speed` changes.
+- **Current VS Code/xterm.js detection.** Every VS Code release now selects the xterm.js wheel profile directly instead of passing through an obsolete version ceiling. Black-box tmux and real VS Code comparisons match Claude Code's practical displacement for both single events and accelerated bursts.
+- **Provider-aware WebSearch.** Real Anthropic-native endpoints receive `web_search_20250305`; ordinary OpenAI-compatible DeepSeek/Kimi/Qwen/MiniMax chat endpoints use AnySearch. Anthropic-shaped third-party proxies that return a normal `tool_use` are handled as client-side search rather than being mistaken for hosted search. `/nativesearch` and `/anysearch` remain independent controls.
+- **macOS Bash `EPERM` fix.** Unix Bash children now rely on `setsid()` alone instead of combining it with a conflicting pre-spawn process-group setup. Whole-process-group cleanup on timeout and abort is preserved.
+
+**Platforms:** macOS (Apple Silicon / Intel / universal), Linux (x64 / arm64, musl-static), Windows (x64). Verify downloads against `SHA256SUMS`.
+
+## swarmcode v0.13.3
+
+A capability-expansion release with codebase intelligence, isolated parallel worktrees, durable workflow lifecycle management, and stronger long-running-session safeguards.
+
+- **Codebase intelligence.** The new `sc-codebase-graph` crate builds a parallel Tree-sitter index for Rust, TypeScript, JavaScript, Python, and Go, with cross-file definitions, references, and symbol navigation.
+- **Fast isolated worktrees.** `sc-fast-worktree` combines reflink copies, hash sharding, and git worktrees so parallel agents can edit isolated workspaces without serializing on one checkout.
+- **Durable workflow hosting.** `sc-workflow-host` persists workflow runs and supports pause, resume, complete, cancel, and JSON-Schema-validated outputs.
+- **Provider and tool-loop robustness.** Anthropic OAuth credentials refresh and retry once after a 401; tool inputs receive schema-guided coercion before dispatch; PermissionDenied and PostToolBatch hooks can steer the next iteration; LSP diagnostics are reinjected through the reminder registry.
+- **Safer repeated compaction.** Existing summaries are extended instead of regenerated from scratch, and warm Anthropic prompt-cache prefixes are preserved unless context pressure becomes critical.
+- **Plugin supply-chain pinning.** Marketplace entries can require an exact SHA-256, verified with a constant-time comparison before install.
+
+**Platforms:** macOS (Apple Silicon / Intel / universal), Linux (x64 / arm64, musl-static), Windows (x64). Verify downloads against `SHA256SUMS`.
+
 ## swarmcode v0.12.2
 
 Web search and web fetch reach full parity on Anthropic-compatible endpoints, the model keeps searching until a complex question is answered, and the HUD tool tally counts every tool live — including server-side research — in both the classic and fullscreen views.
