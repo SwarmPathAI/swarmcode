@@ -1,3 +1,41 @@
+## swarmcode v0.16.0
+
+Config-path flexibility, a collapsible background-task bar, and a stabler task runner for check-style commands.
+
+- **Config directory env vars.** `SWARMCODE_CONFIG_DIR` (or the claude-code-compatible `CLAUDE_CONFIG_DIR`) now selects the config root; when neither is set, the default is `~/.swarmcode`. Useful for native-mode and Grok-integration setups that need an explicit directory.
+- **Collapsible background tasks.** Consecutive background-task status lines (e.g. `bash-7 · running…`, teammate notices) collapse into a single `⏺ Background tasks (N)` row — click it or press `Ctrl+O` to expand. The old "Team" wording is gone from the notice header.
+- **Check commands no longer false-fail.** In the task runner, check-style commands (`grep`, `which`, `brew list`, `git status`, `cargo check`, `npm list`, `flutter …`, …) that exit with no output are treated as an expected success instead of a cancelled run, so "check" tasks stop misreporting failure.
+- **Stabler task cgroup cleanup.** Empty cgroups are removed eagerly during teardown, cutting false failures from cgroup-removal races and kill timing.
+- **`daemon stop-service`.** `swarmcode daemon stop-service <name> [--force]` stops a single named service (pkill-based) without restarting the whole daemon; `--force` sends SIGKILL.
+
+**Platforms:** macOS (Apple Silicon / Intel / universal), Linux (x64 / arm64, musl-static), Windows (x64). Verify downloads against `SHA256SUMS`.
+
+## swarmcode v0.15.0
+
+xAI / Grok as a first-class OAuth + tools channel, DeepSeek V4 routing clarity, mid-turn input queue polish, and product docs aligned with the live site.
+
+- **xAI device-code OAuth (`xai-oauth`).** `swarmcode model xai-oauth` runs a device-code flow against `auth.x.ai`; tokens store under `oauthCredentials` and auto-refresh. Existing Grok CLI logins (`~/.grok/auth.json`) still work as a passive fallback. API-key channel remains `xai` + `XAI_API_KEY`.
+- **Imagine `GenerateImage`.** On `xai` / `xai-oauth`, images use xAI Imagine (`grok-imagine-image*`) with `aspect_ratio` + `b64_json` instead of OpenAI-only `size`/`quality` fields that return HTTP 400.
+- **Responses `WebSearch` on Grok.** Client `POST …/responses` with built-in `web_search`; tool name stays `WebSearch`. Prefer `deepseek-anthropic` for DeepSeek native search; plain OpenAI-compat DeepSeek still uses AnySearch.
+- **DeepSeek V4 model ids.** Wizard/catalog suggestions use `deepseek-v4-flash` / `deepseek-v4-pro` (optional `[1m]`), not marketing date suffixes.
+- **Mid-turn queue.** Dim **`[Send now]`** chip, double Enter (~800ms) to promote, **↑** to edit the latest queued line.
+- **Docs.** EN + 中文 site under `swarmcode-web-docs/` → [swarmpathplatform.com/swarmcode-docs](https://www.swarmpathplatform.com/swarmcode-docs/).
+
+**Platforms:** macOS (Apple Silicon / Intel / universal), Linux (x64 / arm64, musl-static), Windows (x64). Verify downloads against `SHA256SUMS`.
+
+## swarmcode v0.14.1
+
+Defaults and packaging release: Auto permission mode out of the box, a shippable L1 default skills pack (documents + design), and cleaner first-run configuration that does not accumulate one-shot allow lists.
+
+- **Auto is the default permission mode.** Fresh installs seed `~/.swarmcode/settings.json` with `permissions.defaultMode: "auto"` (Claude 2.1.x parity). The classifier auto-allows lower-risk tool calls; explicit deny/ask rules still win. Users who prefer manual prompting can set `defaultMode` to `default`.
+- **L1 default skills pack.** Release tarballs include `default-skills/` (docx, pptx, xlsx, pdf, frontend-design, canvas-design, theme-factory, brand-guidelines, skill-creator). First launch and `swarmcode skill install-defaults` sync missing skills into `~/.swarmcode/skills/` without overwriting user-owned dirs. npm `postinstall` and `install.sh` run the same path.
+- **Permission UX with workflows.** High-priority Bash/tool approval preempts the `/workflows` monitor panel so Esc-close is not the only way to surface a queued approval.
+- **Lean permissions storage.** One-shot grants belong in layered `settings.json` allow rules, not a long-lived dump in `config.json`. New installs stay Claude-simple: Auto + empty allow unless you click “don’t ask again”.
+
+Also includes v0.14.0 reliability work: Claude-matched wheel scrolling, provider-aware WebSearch routing, and the macOS Bash `setsid`/`EPERM` fix.
+
+**Platforms:** macOS (Apple Silicon / Intel / universal), Linux (x64 / arm64, musl-static), Windows (x64). Verify downloads against `SHA256SUMS`.
+
 ## swarmcode v0.14.0
 
 A terminal-input and provider-routing reliability release, with Claude-matched scrolling in current VS Code, explicit native-versus-client web search behavior, and a process-level macOS Bash fix.

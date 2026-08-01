@@ -43,6 +43,30 @@ async function main() {
       execFileSync("xattr", ["-d", "com.apple.quarantine", path.join(dir, BIN_NAME)], { stdio: "ignore" });
     } catch (_) {}
   }
+
+  // L1 default skills: release tarball ships `default-skills/` next to the
+  // binary. Sync missing-only into ~/.swarmcode/skills (same as first launch).
+  // Best-effort — never fail the npm install if this step errors.
+  try {
+    const binPath = path.join(dir, BIN_NAME);
+    if (fs.existsSync(path.join(dir, "default-skills", "MANIFEST.toml"))) {
+      console.log("swarmcode: installing default skills pack…");
+      execFileSync(binPath, ["skill", "install-defaults"], {
+        stdio: "inherit",
+        env: {
+          ...process.env,
+          // Ensure the pack next to this binary is found even if PATH points
+          // at an older swarmcode.
+          SWARMCODE_DEFAULT_SKILLS_DIR: path.join(dir, "default-skills"),
+        },
+      });
+    }
+  } catch (e) {
+    console.warn(
+      `swarmcode: default skills sync skipped (${e.message || e}); run \`swarmcode skill install-defaults\` later`
+    );
+  }
+
   console.log("swarmcode: installed — run `swarmcode model` to configure a channel");
 }
 

@@ -129,6 +129,14 @@ release_dir="$RELEASES_DIR/$version-$label"
 mkdir -p "$release_dir"
 install -m 755 "$tmp/swarmcode" "$release_dir/swarmcode"
 
+# L1 default skills pack lives next to the binary in the release tarball.
+# Keep it beside the installed binary so first-launch sync /
+# `swarmcode skill install-defaults` finds `{exe_dir}/default-skills/`.
+if [ -d "$tmp/default-skills" ]; then
+  rm -rf "$release_dir/default-skills"
+  cp -R "$tmp/default-skills" "$release_dir/default-skills"
+fi
+
 # macOS Gatekeeper: clear the quarantine bit for a smooth first run.
 command -v xattr >/dev/null 2>&1 && xattr -d com.apple.quarantine "$release_dir/swarmcode" 2>/dev/null || true
 
@@ -165,4 +173,11 @@ case ":$PATH:" in
   *":$INSTALL_DIR:"*) ;;
   *) echo "NOTE: add to PATH →  export PATH=\"$INSTALL_DIR:\$PATH\"" ;;
 esac
+# Sync L1 default skills into ~/.swarmcode/skills (missing-only; safe to re-run).
+if [ -d "$release_dir/default-skills" ]; then
+  SWARMCODE_DEFAULT_SKILLS_DIR="$release_dir/default-skills" \
+    "$INSTALL_DIR/swarmcode" skill install-defaults 2>/dev/null \
+    || echo "NOTE: run later →  swarmcode skill install-defaults"
+fi
+
 echo "Get started:  swarmcode model   (configure a channel)   then:  swarmcode"
