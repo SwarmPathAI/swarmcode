@@ -20,11 +20,11 @@
 
 **New in v0.13.3 — code intelligence and workflow isolation.** New Tree-sitter codebase-graph, fast reflink worktree, and workflow-host crates add cross-file navigation, isolated parallel-agent workspaces, and durable workflow lifecycle management. Provider credential refresh, schema-guided tool-input coercion, new hook seams, safer repeated compaction, and plugin SHA-256 pinning harden long-running agent sessions.
 
-**New in v0.16.0 — config-path flexibility, collapsible background tasks, stabler check commands.** `SWARMCODE_CONFIG_DIR` / `CLAUDE_CONFIG_DIR` select the config root (default `~/.swarmcode`). Consecutive background-task status lines collapse into one `⏺ Background tasks (N)` row (click / `Ctrl+O` to expand). Check-style commands that exit 0 with no output no longer false-fail; empty cgroups clean up more reliably; `swarmcode daemon stop-service <name> [--force]` stops a single named service.
+**New in v0.14.1 — Claude-matched scrolling and explicit provider search routing.** Mouse-wheel scrolling ports Claude Code 2.1.220's complete time-driven acceleration model, detects current VS Code/xterm.js releases without an obsolete version ceiling, and is black-box verified against Claude Code in tmux and real VS Code. True Anthropic-native endpoints use hosted `web_search_20250305`, while OpenAI-compatible channels and Anthropic-shaped proxies that return ordinary `tool_use` calls use client-side AnySearch. The Unix Bash launcher also removes a conflicting process-group setup that made `setsid()` fail with `EPERM` on macOS.
 
 **New in v0.15.0 — xAI Grok device-code OAuth, Imagine images, Responses web search.** `swarmcode model xai-oauth` signs in with a device code (or reuses `~/.grok/auth.json`); tokens auto-refresh. `GenerateImage` uses xAI Imagine on Grok channels; `WebSearch` uses Responses `web_search`. DeepSeek V4 API ids and the mid-turn **[Send now]** / double-Enter queue polish round out the release. Docs: [swarmpathplatform.com/swarmcode-docs](https://www.swarmpathplatform.com/swarmcode-docs/).
 
-**New in v0.14.1 — Claude-matched scrolling and explicit provider search routing.** Mouse-wheel scrolling ports Claude Code 2.1.220's complete time-driven acceleration model, detects current VS Code/xterm.js releases without an obsolete version ceiling, and is black-box verified against Claude Code in tmux and real VS Code. True Anthropic-native endpoints use hosted `web_search_20250305`, while OpenAI-compatible channels and Anthropic-shaped proxies that return ordinary `tool_use` calls use client-side AnySearch. The Unix Bash launcher also removes a conflicting process-group setup that made `setsid()` fail with `EPERM` on macOS.
+**New in v0.16.0 — config-path flexibility, collapsible background tasks, stabler check commands.** `SWARMCODE_CONFIG_DIR` / `CLAUDE_CONFIG_DIR` select the config root (default `~/.swarmcode`). Consecutive background-task status lines collapse into one `⏺ Background tasks (N)` row (click / `Ctrl+O` to expand). Check-style commands that exit 0 with no output no longer false-fail; empty cgroups clean up more reliably; `swarmcode daemon stop-service <name> [--force]` stops a single named service.
 
 Distributed as prebuilt binaries. ✦ This repository hosts **releases and documentation only**.
 
@@ -102,11 +102,11 @@ Binary-only, free to use; no redistribution or reverse engineering. See [LICENSE
 
 **v0.13.3 新增 —— 代码智能与工作流隔离。** 新增基于 Tree-sitter 的代码库图、快速 reflink worktree 与 workflow-host crate，提供跨文件导航、并行 agent 隔离工作区和可持久化的工作流生命周期管理。Provider 凭证刷新、工具输入按 Schema 强制转换、新的钩子缝、重复压缩保护和插件 SHA-256 锁定进一步加固长时间运行的 agent 会话。
 
-**v0.16.0 新增 —— 配置目录可指定、后台任务可折叠、check 命令更稳。** `SWARMCODE_CONFIG_DIR` / `CLAUDE_CONFIG_DIR` 可选配置根目录（默认 `~/.swarmcode`）。连续后台任务状态行折叠为一条 `⏺ Background tasks (N)`（点击 / `Ctrl+O` 展开）。无输出且 exit 0 的 check 类命令不再误报失败；空 cgroup 清理更可靠；`swarmcode daemon stop-service <name> [--force]` 可单独停一个命名服务。
+**v0.14.1 新增 —— 与 Claude 一致的滚动及明确的 Provider 搜索路由。** 鼠标滚轮完整移植 Claude Code 2.1.220 按时间驱动的加速模型，现代 VS Code/xterm.js 版本不再受过时版本上限影响，并已通过 tmux 黑盒测试和真实 VS Code 测试与 Claude Code 对照验证。真正支持 Anthropic 原生工具的端点使用服务端 `web_search_20250305`；OpenAI 兼容渠道及返回普通 `tool_use` 的 Anthropic 外形代理使用客户端 AnySearch。Unix Bash 启动器还移除了会导致 macOS `setsid()` 返回 `EPERM` 的冲突进程组设置。
 
 **v0.15.0 新增 —— xAI Grok 设备码 OAuth、Imagine 出图、Responses 联网。** `swarmcode model xai-oauth` 设备码登录（或复用 `~/.grok/auth.json`），token 自动刷新。Grok 渠道上 `GenerateImage` 走 Imagine，`WebSearch` 走 Responses `web_search`。DeepSeek V4 API id 与回合中 **[Send now]** / 双 Enter 队列一并打磨。文档：[swarmpathplatform.com/swarmcode-docs](https://www.swarmpathplatform.com/swarmcode-docs/)。
 
-**v0.14.1 新增 —— 与 Claude 一致的滚动及明确的 Provider 搜索路由。** 鼠标滚轮完整移植 Claude Code 2.1.220 按时间驱动的加速模型，现代 VS Code/xterm.js 版本不再受过时版本上限影响，并已通过 tmux 黑盒测试和真实 VS Code 测试与 Claude Code 对照验证。真正支持 Anthropic 原生工具的端点使用服务端 `web_search_20250305`；OpenAI 兼容渠道及返回普通 `tool_use` 的 Anthropic 外形代理使用客户端 AnySearch。Unix Bash 启动器还移除了会导致 macOS `setsid()` 返回 `EPERM` 的冲突进程组设置。
+**v0.16.0 新增 —— 配置目录可指定、后台任务可折叠、check 命令更稳。** `SWARMCODE_CONFIG_DIR` / `CLAUDE_CONFIG_DIR` 可选配置根目录（默认 `~/.swarmcode`）。连续后台任务状态行折叠为一条 `⏺ Background tasks (N)`（点击 / `Ctrl+O` 展开）。无输出且 exit 0 的 check 类命令不再误报失败；空 cgroup 清理更可靠；`swarmcode daemon stop-service <name> [--force]` 可单独停一个命名服务。
 
 以预编译二进制发行。✦ 本仓库只承载**发布产物与文档**。
 
